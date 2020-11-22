@@ -2,7 +2,7 @@
  * @Author: lxk0301 https://github.com/lxk0301 
  * @Date: 2020-08-16 18:54:16
  * @Last Modified by: lxk0301
- * @Last Modified time: 2020-11-11 18:54:37
+ * @Last Modified time: 2020-11-22 08:22:37
  */
 /*
 京小超(活动入口：京东APP-》首页-》京东超市-》底部东东超市)
@@ -91,6 +91,7 @@ async function jdSuperMarket() {
   await receiveBlueCoin();//收蓝币（小费）
   await receiveLimitProductBlueCoin();//收限时商品的蓝币
   await smtgSign();//每日签到
+  await smtgBeanSign()//
   await doDailyTask();//做日常任务，分享，关注店铺，
   await help();//商圈助力
   //await smtgQueryPkTask();//做商品PK任务
@@ -283,6 +284,26 @@ function smtgSign() {
   })
 }
 
+function smtgBeanSign() {
+  return new Promise((resolve) => {
+    $.get(taskUrl('smtg_sign',{"channel": "1"}), async (err, resp, data) => {
+      try {
+        // console.log('ddd----ddd', data)
+        if (err) {
+          console.log('\n京小超: API查询请求失败 ‼️‼️')
+          console.log(JSON.stringify(err));
+        } else {
+          //data = JSON.parse(data);
+          console.log(data)
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
 
 // 商圈活动
 async function businessCircleActivity() {
@@ -345,8 +366,8 @@ async function businessCircleActivity() {
       }
     } else if (joinStatus === 1) {
       console.log(`我邀请的人数:${inviteCount}\n`)
-      console.log(`\n我方战队战队 [${currentUserPkInfo.teamName}]/【${currentUserPkInfo.teamCount}】`);
-      console.log(`对方战队战队 [${pkUserPkInfo.teamName}]/【${pkUserPkInfo.teamCount}】\n`);
+      console.log(`\n我方战队战队 [${currentUserPkInfo && currentUserPkInfo.teamName}]/【${currentUserPkInfo && currentUserPkInfo.teamCount}】`);
+      console.log(`对方战队战队 [${pkUserPkInfo && pkUserPkInfo.teamName}]/【${pkUserPkInfo && pkUserPkInfo.teamCount}】\n`);
     }
     if (pkStatus === 1) {
       console.log(`商圈PK进行中`)
@@ -526,8 +547,8 @@ async function unlockProductByCategory(category) {
 //升级货架和商品
 async function upgrade() {
   superMarketUpgrade = $.getdata('jdSuperMarketUpgrade') ? $.getdata('jdSuperMarketUpgrade') : superMarketUpgrade;
-  if ($.isNode() && process.env.jdSuperMarketUpgrade) {
-    superMarketUpgrade = process.env.jdSuperMarketUpgrade;
+  if ($.isNode() && process.env.SUPERMARKET_UPGRADE) {
+    superMarketUpgrade = process.env.SUPERMARKET_UPGRADE;
   }
   if (`${superMarketUpgrade}` === 'false') {
     console.log(`\n自动升级: 您设置的是关闭自动升级\n`);
