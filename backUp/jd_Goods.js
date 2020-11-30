@@ -3,8 +3,6 @@
 
 const $ = new Env('心愿单50京豆');
 
-await notify.sendNotify(`${$.name}`, `领50京豆啦`, { url: `https://h5.m.jd.com/babelDiy/Zeus/3mTNcpWt5JYh3aUCyo6gqKuF4pnx/index.html` })
-
 $.msg($.name, "领50京豆啦", "https://h5.m.jd.com/babelDiy/Zeus/3mTNcpWt5JYh3aUCyo6gqKuF4pnx/index.html", {"open-url": "openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://h5.m.jd.com/babelDiy/Zeus/3mTNcpWt5JYh3aUCyo6gqKuF4pnx/index.html%22%20%7D"});
 
 $.done();
